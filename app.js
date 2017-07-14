@@ -27,7 +27,8 @@ var user = mongoose.Schema({
     id:String,
     password:String,
     sex:String,
-    age:String
+    age:String,
+    token:String
 });
 
 var medicData = mongoose.Schema({
@@ -40,8 +41,16 @@ var medicData = mongoose.Schema({
     ingridient:String
 });
 
+var userMedicList = mongoose.Schema({
+    token:String,
+    name:String,
+    time:String
+});
+
 var userModel = mongoose.model('userModel',user);
 var medicModel = mongoose.model('medicModel',medicData);
+var userMedicModel = mongoose.model('userMedicModel',userMedicList);
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -52,6 +61,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 require('./routes/parse')(app,request,cheerio,medicModel);
 require('./routes/auth')(app,userModel,randomstring);
+require('./routes/list')(app,userMedicModel);
+require('./routes/pharmarcy')(app,request);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
  var err = new Error('Not Found');

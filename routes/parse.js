@@ -57,7 +57,21 @@ function parse(app,request,cheerio,medicModel){
                         result["save"] = save;
                         result["ingridient"] = ingridient;
                         console.log(result);
-                        res.send(result);
+
+                        var medicDataSave = new medicModel({
+                            "name":result["name"],
+                            "number":result["number"],
+                            "division":result["division"],
+                            "notice":result["notice"],
+                            "ingridient":result["ingridient"],
+                            "use":result["use"],
+                            "saveMedicine":result["save"]
+                        })
+
+                        medicDataSave.save((err,model)=>{
+                            if(err) throw err;
+                            res.send(result);
+                        });
                     });
                 });
             }
