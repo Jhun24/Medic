@@ -3,7 +3,7 @@ module.exports = parse;
 function parse(app,request,cheerio,medicModel){
     app.get('/parse/getData',(req,res)=>{
         var url = "http://terms.naver.com/medicineSearch.nhn?mode=nameSearch&query=";
-        var medicNum = "642101930";
+        var medicNum = req.query.medicNum;
     
         var resultUrl = url+medicNum;
         
