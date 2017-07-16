@@ -64,6 +64,28 @@
 > result["division"] : 전문 의약품 or 일반 의약품
 > result["use"] : 사용 방법
 > result["notice"] : 주의 사항
+> result["save"] : 저장 용기
+> result["ingridient"] : 약 재료
+
+- /pharmacy/check?w="위도"&h="경도"
+>> param
+
+> w : 위도
+
+> h : 경도
+
+>> require
+
+> model array : 주변 정보
+
+- /push/shangus?token="user token"&fcm="user firebase key"
+>> param
+> token : 유저 토큰
+
+> fcm : 유저 firebase 토큰
+
+>> require
+> 현재 시간에 맞는 약 알람
 
 # Query :POST
 - /auth/login
