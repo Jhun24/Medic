@@ -8,6 +8,10 @@ var cheerio = require('cheerio');
 var request = require('request');
 var mongoose = require('mongoose');
 var randomstring = require('randomstring');
+var gMapClient = require('@google/maps').createClient({
+    key:'AIzaSyDBi3aWGM5tfFoabbUBsbHvcF_gOPGVkpI'
+});
+var FCM = require('fcm-push');
 
 var app = express();
 
@@ -38,13 +42,14 @@ var medicData = mongoose.Schema({
     number:String,
     notice:String,
     saveMedicine:String,
-    ingridient:String
+    ingridient:String,
+    img:String
 });
 
 var userMedicList = mongoose.Schema({
     token:String,
-    name:String,
-    time:String
+    name:Array,
+    time:Array
 });
 
 var userModel = mongoose.model('userModel',user);
@@ -62,8 +67,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 require('./routes/parse')(app,request,cheerio,medicModel);
 require('./routes/auth')(app,userModel,randomstring);
 require('./routes/list')(app,userMedicModel);
-require('./routes/pharmarcy')(app,request);
-
+require('./routes/pharmarcy')(app,request,gMapClient);
+require('./routes/push')(app,FCM,userMedicModel);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
  var err = new Error('Not Found');
@@ -79,7 +84,6 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
 });
 
 module.exports = app;

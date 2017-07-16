@@ -1,7 +1,7 @@
 module.exports = parse;
 
 function parse(app,request,cheerio,medicModel){
-    app.get('/getData',(req,res)=>{
+    app.get('/parse/getData',(req,res)=>{
         var url = "http://terms.naver.com/medicineSearch.nhn?mode=nameSearch&query=";
         var medicNum = "642101930";
     
@@ -18,8 +18,9 @@ function parse(app,request,cheerio,medicModel){
 
         medicModel.find({"number":medicNum},(err,model)=>{
             if(err) throw err;
-
-            if(!model){
+            console.log(model[0]);
+            if(model[0] == null){
+                console.log("Save model");
                 request(resultUrl,(err,response,html)=>{
                     if(err) throw err;
 
@@ -37,8 +38,7 @@ function parse(app,request,cheerio,medicModel){
                         if(error) throw error;
 
                         var test = code.split("<tr>");
-
-                        division = test[2].split("</span>")[1];
+                        division = test[2].split("</span>")[1].split("\">")[1].split("</td>")[0];
                         var setUse = test[5].split("<p class=\"txt\">");
                         use = setUse[5].split("<h3")[0];
                         use = use.replace("</p>","").replace(/<br>/gi,"\n");
@@ -47,7 +47,7 @@ function parse(app,request,cheerio,medicModel){
                         ingridient = setUse[2].split("</p>")[0];
                         save = setUse[3].split("</p>")[0];
 
-
+                        var img = test[0].split("<img id=\"innerImage0\" class=\"lazyLoadImage\" src=\"http://static.naver.net/terms/terms/img/e.gif\" data-src=\"")[1].split("\"")[0];
                         var result = new Array();
                         result["name"] = medicineName;
                         result["number"] = medicNum;
@@ -65,17 +65,20 @@ function parse(app,request,cheerio,medicModel){
                             "notice":result["notice"],
                             "ingridient":result["ingridient"],
                             "use":result["use"],
-                            "saveMedicine":result["save"]
-                        })
-
+                            "saveMedicine":result["save"],
+                            "img":img
+                        });
+                        console.log(test[2]);
                         medicDataSave.save((err,model)=>{
                             if(err) throw err;
-                            res.send(result);
+                            console.log(model);
+                            res.send(model);
                         });
                     });
                 });
             }
             else{
+                console.log("Load Model")
                 res.send(model[0]);
             }
         });

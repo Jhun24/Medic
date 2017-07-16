@@ -1,21 +1,25 @@
 module.exports = pharmarcy;
 
-function pharmarcy(app,request){
-    //  http://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyLcinfoInqire
-    //
-    
+function pharmarcy(app,request,gMapClient){
     app.get('/pharmarcy/check',(req,res)=>{
-        "use strict";
-        var url = "http://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyLcinfoInqire";
-        url += "?ServiceKey"+"BIgnMcOt6Lmw%2FA9LPOyT40EBlmA1hkOm5ntiXi4od57UdwRvmrkK6p2B%2FG7YjxbGo%2FoPK67it2tisgdfLx0Y5g%3D%3D";
-        url +=  '&' + encodeURIComponent('') + '=' + encodeURIComponent('');
+        // https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
+        // 
+        
+        var w = "126.97855668168214";
+        var h = "37.477388795232365";
+        var radius = "500";
 
-        request({
-            url:url,
-            method:"GET"
-        },(err,response,body)=>{
-            console.log(body);
-            res.send(body);
+        var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+        var location = "location="+h+","+w+"&";
+        var type = "&type=pharmacy";
+        var key="&key=AIzaSyC-GmMkR9yIm1c3dtO1Y-gzbHGWbxEPyAk";
+
+        var queryUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"+location+"radius=500"+type+key;
+
+        console.log(queryUrl);
+        request(queryUrl,(err,response,html)=>{
+            if(err) throw err;
+            res.send(html);
         });
     });
-}
+ }

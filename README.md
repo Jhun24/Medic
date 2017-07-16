@@ -33,6 +33,6 @@
 - userMedicineList
 > token : String
 
-> tine : String
+> time : Array
 
-> name : String
+> name : Array
