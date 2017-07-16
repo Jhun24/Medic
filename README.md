@@ -60,6 +60,10 @@
 
 > reuslt Array
 > result["name"] : 약 이름
+> result["number"] : 약 코드
+> result["division"] : 전문 의약품 or 일반 의약품
+> result["use"] : 사용 방법
+> result["notice"] : 주의 사항
 
 # Query :POST
 - /auth/login
