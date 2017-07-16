@@ -8,25 +8,37 @@ function push(app,FCM,userMedicModel){
     app.get('/shangus',(req,res)=>{
         var token = req.query.token;
         var fcmToken = req.query.fcm;
-        
+
+        var d = new Date();
+        var time = d.getDate();
+
+        var fcmSendName = "";
+
         userMedicModel.find({"token":token},(err,model)=>{
             if(err) throw err;
-            
+            var arr = model[0]["time"];
+            for(var i = 0; i<arr.length; i++){
+                if(arr[i] == time){
+                    fcmSendName = model[0]["name"][i];
+                }
+            }
         });
+
+        var fcmTitle = fcmSendName+" 먹을시간입니다!";
 
         var message = {
             to : fcmToken,
             priority:'high',
             notification:{
-                title:,
-                body:'노무현'
+                title:"약 먹을시간입니다!",
+                body:fcmTitle
             }
         };
 
         fcm.send(message,(err,result)=>{
             if(err) console.log(error);
             else{
-                console.log(result);
+                console.log("fcm send success  :  "+result);
             }
         });
     });

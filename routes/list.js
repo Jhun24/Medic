@@ -16,9 +16,21 @@ function list(app,userMedicModel){
         var name = req.body.name;
         var time = req.body.time;
 
-        var userMedicSaveModel = new userMedicModel({"token":token,"name":name,"time":time},(err,model)=>{
+        var modelName;
+        var modelTime;
+
+        userMedicModel.find({"token":token},(err,model)=>{
+            if(err) throw err;
+            modelName = model[0]["time"];
+            modelName.push(name);
+            modleTime = model[0]["name"];
+            modelTime.push(time);
+        });
+
+        userMedicModel.update({"token":token},{$set:{"name":modelName,"time":modelTime}},(err,model)=>{
             if(err) throw err;
             res.send(200);
         });
+
     });
 }
