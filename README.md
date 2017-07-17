@@ -47,8 +47,11 @@
 >> require
 
 > UserMedicList Model : 유저 약 정보가 담긴 Arr를 리턴합니다
+
 > model["token"] : 유저토큰
+
 > model["name"] : 약 이름 Array
+
 > model["time"] : 약을 먹을 시간 Array
 
 - /parse/getData?medicNum="medic-number"
@@ -60,11 +63,17 @@
 
 > reuslt Array
 > result["name"] : 약 이름
+
 > result["number"] : 약 코드
+
 > result["division"] : 전문 의약품 or 일반 의약품
+
 > result["use"] : 사용 방법
+
 > result["notice"] : 주의 사항
+
 > result["save"] : 저장 용기
+
 > result["ingridient"] : 약 재료
 
 - /pharmacy/check?w="위도"&h="경도"
@@ -127,4 +136,5 @@
 > name : 약 이름을 의미합니다
 
 >> require
+
 > Server code : 200
