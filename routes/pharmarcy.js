@@ -7,6 +7,7 @@ function pharmarcy(app,request,gMapClient){
         
         var w = req.query.w;
         var h = req.query.h;
+
         var radius = "500";
 
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
