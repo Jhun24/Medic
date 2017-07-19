@@ -37,6 +37,19 @@
 
 > name : Array
 
+- eat
+> token : String
+
+> breakfirst : String,
+
+> launch : String,
+
+> dinner : String
+
+- allergy
+> token : String
+
+> list : Array
 
 # Query :GET
 - /list?token="user-token"
@@ -96,6 +109,27 @@
 >> require
 > 현재 시간에 맞는 약 알람
 
+- /list/eat/getData?token="user token"
+>> param
+> token : 유저 토큰
+
+>> require
+
+> model["breakfirst"] : 아침
+
+> model["lunch"] : 점심
+
+> model["dinner"] : 저녁
+
+- /list/allergy/getData?token="user token"
+>> param
+
+> token : 유저 토큰
+
+>> require
+
+> list Array : 사용자 알러지 목록
+
 # Query :POST
 - /auth/login
 >> Param
@@ -126,6 +160,14 @@
 
 > token : 유저 토큰을 의미합니다
 
+- /auth/login/authenticate
+>> param
+
+> token : 유조 토큰을 의미합니다
+
+>> request
+> model :  유저 전체 데이터
+
 - /list/add
 >> Param
 
@@ -138,3 +180,42 @@
 >> require
 
 > Server code : 200
+
+- /auth/setAge
+>> Param
+
+> token : 유저 데이터를 의미합니다
+
+> age : 유저 나의를 의미합니다
+
+>> require
+
+> server code 200
+
+- list/eat/update
+>> param
+
+> token : user token
+
+> breakfirst(필수 아님) :  유저 아침 식사 시간
+
+> lunch(필수 아님) : 유저 점심 식사 시간
+
+> dinner(필수 아님) : 유저 저녁 식사 시간
+
+> breakfirst , lunch , dinner 중 하나는 필수
+
+>> require
+
+> server code 200
+
+- /list/allergy/update
+>> param
+
+> token : user token
+
+> allergy : 추가할 사용자 알러지
+
+>> require
+
+> server code 200

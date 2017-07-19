@@ -32,4 +32,23 @@ function auth(app,userModel,randomstring){
             res.send(token);
         })
     });
+
+    app.get('/auth/login/authenticate',(req.res)=>{
+        var token = req.query.token;
+
+        userModel.find({"token":token},(err,model)=>{
+            if(err) throw err;
+            res.send(model[0]);
+        });
+    });
+
+    app.post('/auth/setAge',(req,res)=>{
+        var token = req.body.token;
+        var age = req.body.age;
+
+        userModel.update({"token":token},{$set:{"age":age}},(err,model=>{
+            if(err) throw err;
+            res.send(200);
+        });
+    });
 }
