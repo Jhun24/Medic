@@ -130,6 +130,16 @@
 
 > list Array : 사용자 알러지 목록
 
+- /parse/userData
+>> param
+
+> token : 유저 토큰
+
+>> require
+
+> 유저 전체 약 데이터 
+> /parse/getData 와 Array값과 똑같음
+
 # Query :POST
 - /auth/login
 >> Param

@@ -64,11 +64,17 @@ var allergy = mongoose.Schema({
     list:Array
 });
 
+var medic = mongoose.Schema({
+    token:String,
+    number:Array
+});
+
 var userModel = mongoose.model('userModel',user);
 var medicModel = mongoose.model('medicModel',medicData);
 var userMedicModel = mongoose.model('userMedicModel',userMedicList);
 var eatModel = mongoose.model('eatModel',eat);
 var allergyModel = mongoose.model('allergyModel',allergy);
+var mModel = mongoose.model('mModel',medic)
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -78,7 +84,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-require('./routes/parse')(app,request,cheerio,medicModel);
+require('./routes/parse')(app,request,cheerio,medicModel,mModel);
 require('./routes/auth')(app,userModel,randomstring);
 require('./routes/list')(app,userMedicModel,eatModel,allergyModel);
 require('./routes/pharmarcy')(app,request,gMapClient);

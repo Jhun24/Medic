@@ -30,10 +30,10 @@ function auth(app,userModel,randomstring){
         userSaveModle.save((err,model)=>{
             if(err) throw err;
             res.send(token);
-        })
+        });
     });
 
-    app.get('/auth/login/authenticate',(req.res)=>{
+    app.get('/auth/login/authenticate',(req,res)=>{
         var token = req.query.token;
 
         userModel.find({"token":token},(err,model)=>{
@@ -46,7 +46,7 @@ function auth(app,userModel,randomstring){
         var token = req.body.token;
         var age = req.body.age;
 
-        userModel.update({"token":token},{$set:{"age":age}},(err,model=>{
+        userModel.update({"token":token},{$set:{"age":age}},(err,model)=>{
             if(err) throw err;
             res.send(200);
         });

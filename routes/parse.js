@@ -1,10 +1,10 @@
 module.exports = parse;
 
-function parse(app,request,cheerio,medicModel){
+function parse(app,request,cheerio,medicModel,mModel){
     app.get('/parse/getData',(req,res)=>{
         var url = "http://terms.naver.com/medicineSearch.nhn?mode=nameSearch&query=";
         var medicNum = req.query.medicNum;
-    
+        var token = req.query.token;
         var resultUrl = url+medicNum;
         
         var medicineName;
@@ -74,6 +74,31 @@ function parse(app,request,cheerio,medicModel){
                             console.log(model);
                             res.send(model);
                         });
+
+                        mModel.find({"token":token},(err,model)=>{
+                            if(err) throw err;
+                            if(!model){
+                                var numberNewArr = new Array();
+
+                                var saveM = new mModel({"token":token,"number":numberNewArr})
+                                    saveM.sav((error,m)=>{
+                                    if(err) throw err;
+                                    console.log("data save");
+                                });
+                            }
+                            else{
+                                var arrr = model[0]["number"];
+                                var leng = arrr.length;
+                                arrr[leng] = result["number"];
+
+                                var saveM = new mModel({"token":token,"number":arrr});
+
+                                saveM.save((error,m)=>{
+                                    if(error) throw error;
+                                    console.log("data save");
+                                });
+                            }
+                        });
                     });
                 });
             }
@@ -83,4 +108,22 @@ function parse(app,request,cheerio,medicModel){
             }
         });
     });
-}
+
+    app.get('/parse/userData',(req,res)=>{
+        var token = req.query.token;
+        var arr = new Array();
+        var length = 0;
+        mModel.find({"token":token},(err,model)=>{
+            if(err) throw err;
+            for(var i = 0; i<model[0]["number"].length; i++){
+                medicModel.find({"number":model[0]["number"]},(error,m)=>{
+                    if(error) throw error;
+                    arr[length] = m[0];
+                    length++;
+                });
+            }
+
+            res.send(arr);
+        });
+    });
+}   
